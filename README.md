@@ -7,6 +7,7 @@ _**NOTE**_: _Large Files (including compressed archives and model files) are omi
 ## Folder Structure
  - `FgSegNet`: Files related to FgSegNet model
      - `FgSegNet/FgSegNet`: Modified [FgSegNet model source code](https://github.com/lim-anggun/FgSegNet)
+         - `FgSegNet_prudhoeTest.py` : Script written by author to produce FgSegNet masks out of trained scene-specific models
      - `FgSegNet/FgSegNet_M`: Output model files
  - `csv_raw`: CSV files from TimeLapse dataset (contains extraneous information)
      - Filenames: `<folderName>_<#>.csv`
@@ -24,6 +25,8 @@ _**NOTE**_: _Large Files (including compressed archives and model files) are omi
  - `mask.py`: Used locally to convert Labelme `.json`s into binary masks
  - `img_DS/prudhoe#_DS/move.py`: Moves files in DS directories into `scratch` for FgSegNet model
      - Reduces image dimensions by half (due to GPU memory limitations)
+ - `testData.py`: Selects non-manually-masked images labeled to have foreground objects, and randomly picks 2x the amount of non-foreground images
+     - Results in 1/3 positive and 2/3 negative images, which better simulates the proportions of images in dataset than 1/2 split.
 
 ### Acknowledgements
 I would like to thank Dr. Michael I Mandel from Brooklyn College CUNY as well as Dr. John Davis from Staten Island Technical High School for assisting, advising, and supervising me throughout this project.
