@@ -1,10 +1,9 @@
-.ipynb_checkpoints
-.vscode
+.ipynb_checkpoints/
+.vscode/
+__pycache__/
 FgSegNet/FgSegNet_M/*
 FgSegNet/FgSegNet/FgSegNet_M_S_misc/
 FgSegNet/FgSegNet/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
-FgSegNet/FgSegNet/__pycache__/
-FgSegNet/CNN/.ipynb_checkpoints
 img_DS/*.zip
 img_raw_tar/*.tar.gz
 
