@@ -7,9 +7,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from pathlib import Path
 
+# make results reproducable
+torch.manual_seed(42)
 
-# MODEL >>>
+# MODEL & HELPERS >>>
+
 def accuracy(outs, labels):
     res = {}
     # check accuracy for 3 different thresholds
@@ -102,4 +106,56 @@ class VGG16_PT(ModelBase):
 
 # MODEL <<<
 
-# DataLoader >>>
+# Dataset >>>
+
+class Prudhoe_DS(Dataset):
+    def __init__(self, h5_pth, transforms=None):
+        self.transforms = transforms
+        self.h5_pth = h5_pth
+        self.masks = []
+        self.labels = []
+        
+        with h5py.File(self.h5_pth, 'r') as F:
+            pos = F['POS']
+            neg = F['NEG']
+            pos_len = pos.attrs['shape'][0]
+            neg_len = neg.attrs['shape'][0]
+            
+            self.masks = np.vstack([pos, neg])
+            self.labels = np.concatenate([np.ones(pos_len),
+                                          np.zeros(neg_len)])
+        
+    def __len__(self):
+        return len(self.labels)
+    
+    def __getitem__(self, idx):
+        mask = self.masks[idx]
+        label = self.labels[idx]
+        
+        return mask, label
+
+# Dataset <<<
+
+SITES = ['prudhoe_12', 'prudhoe_15', 'prudhoe_22']
+PTH = '/scratch/richardso21/20-21_BGSUB/'
+
+Path(os.path.join(PTH, 'mask_classifier_M')).mkdir(exist_ok=True)
+batch_size = 64
+
+for site in SITES:
+    h5F = os.path.join(PTH, 'FgSegNet_O', f'{site}.h5')
+    
+    ds = Prudhoe_DS(h5F)
+    ds_size = len(ds)
+
+    train_size = int(ds_size * .70)
+    val_size = (ds_size - train_size) // 2
+    test_size = ds_size - train_size - val_size
+    
+    train_ds, val_ds, test_ds = random_split(ds, [train_size, val_size, test_size])
+
+    train_loader = DataLoader(train_ds, batch_size, shuffle=True, pin_memory=True)
+    val_loader = DataLoader(val_ds, batch_size*2, pin_memory=True)
+    test_loader = DataLoader(test_ds, batch_size*2, pin_memory=True)
+
+    
