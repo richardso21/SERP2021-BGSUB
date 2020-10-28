@@ -9,7 +9,7 @@ from my_upsampling_2d import MyUpSampling2D
 import multiprocessing
 from multiprocessing import Pool
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 # scales images to three proportions (following FgSegNet methods)
 def scaleImg(input_path):
@@ -45,7 +45,7 @@ Path(OPTH).mkdir(exist_ok=True)
 # repeat for each of 3 sites
 for site in SITES:
     print(f'SITE: {site}')
-    
+    Path(join(OPTH, site)).mkdir(exist_ok=True)
     # load respective model
     mdl_path = join(PTH, f'FgSegNet_M/Prudhoe/models{TSET}', f'mdl_{site.replace("_", "")}.h5')
     model = load_model(mdl_path, custom_objects={'MyUpSampling2D': MyUpSampling2D}, compile=False)
@@ -61,6 +61,8 @@ for site in SITES:
     # for each list of splits
     for neg_bool, input_splts in enumerate([input_splts_pos, input_splts_neg]):
         # for each chunk
+        T = 'neg' if neg_bool else 'pos'
+        Path(join(OPTH, site, T)).mkdir(exist_ok=True)
         for input_splt in input_splts:
             # scale the images w/ `scaleImg()`
             data = scaleImg(input_splt)
@@ -71,6 +73,6 @@ for site in SITES:
             
             # save each probability mask as .npy file w/ respective name
             for i, input_fn in enumerate(input_splt):
-                with open(join(OPTH, f'{input_fn.stem}_{"neg" if neg_bool else "pos"}.npy'), 'wb') as F:
+                with open(join(OPTH, site, T, f'{input_fn.stem}.npy'), 'wb') as F:
                     np.save(F, probs[i])
                     print(F.name)
