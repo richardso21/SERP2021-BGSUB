@@ -6,8 +6,10 @@ from keras.preprocessing import image as kImage
 from skimage.transform import pyramid_gaussian
 from keras.models import load_model
 from my_upsampling_2d import MyUpSampling2D
+import multiprocessing
+from multiprocessing import Pool
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 # scales images to three proportions (following FgSegNet methods)
 def scaleImg(input_path):
@@ -45,7 +47,7 @@ for site in SITES:
     print(f'SITE: {site}')
     
     # load respective model
-    mdl_path = join(PTH, f'FgSegNet/FgSegNet_M/Prudhoe/models{TSET}', f'mdl_{site.replace("_", "")}.h5')
+    mdl_path = join(PTH, f'FgSegNet_M/Prudhoe/models{TSET}', f'mdl_{site.replace("_", "")}.h5')
     model = load_model(mdl_path, custom_objects={'MyUpSampling2D': MyUpSampling2D}, compile=False)
     
     # create positive + negative image list
@@ -56,27 +58,19 @@ for site in SITES:
     input_splts_pos = [input_pths_pos[x:x+32] for x in range(0, len(input_pths_pos), 32)]
     input_splts_neg = [input_pths_neg[x:x+32] for x in range(0, len(input_pths_neg), 32)]
 
-    # for each chunk
-    for i, input_splt in enumerate(input_splts_pos):
-        # scale the images w/ `scaleImg()`
-        data = scaleImg(input_splt)
+    # for each list of splits
+    for neg_bool, input_splts in enumerate([input_splts_pos, input_splts_neg]):
+        # for each chunk
+        for input_splt in input_splts:
+            # scale the images w/ `scaleImg()`
+            data = scaleImg(input_splt)
 
-        # feed them into model & reshape
-        probs = model.predict(data, batch_size=1, verbose=1)
-        probs = probs.reshape([probs.shape[0], probs.shape[1], probs.shape[2]])
-        
-        # save as .npy file
-        with open(join(OPTH, f'{site}_pos_{i+1}.npy'), 'wb') as F:
-            np.save(F, probs)
-            print(F.name)
-
-    # repeat for negative images
-    for i, input_splt in enumerate(input_splts_neg):
-        data = scaleImg(input_splt)
-
-        probs = model.predict(data, batch_size=1, verbose=1)
-        probs = probs.reshape([probs.shape[0], probs.shape[1], probs.shape[2]])
-        
-        with open(join(OPTH, f'{site}_neg_{i+1}.npy'), 'wb') as F:
-            np.save(F, probs)
-            print(F.name)
+            # feed them into model & reshape
+            probs = model.predict(data, batch_size=1, verbose=1)
+            probs = probs.reshape([probs.shape[0], probs.shape[1], probs.shape[2]])
+            
+            # save each probability mask as .npy file w/ respective name
+            for i, input_fn in enumerate(input_splt):
+                with open(join(OPTH, f'{input_fn.stem}_{"neg" if neg_bool else "pos"}.npy'), 'wb') as F:
+                    np.save(F, probs[i])
+                    print(F.name)
