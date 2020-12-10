@@ -26,8 +26,12 @@ _**NOTE**_: _Large Files (including compressed archives and model files) are omi
  - `mask.py`: Used locally to convert Labelme `.json`s into binary masks
  - `img_DS/prudhoe#_DS/move.py`: Moves files in DS directories into `scratch` for FgSegNet model
      - Reduces image dimensions by half (due to GPU memory limitations)
+ - `trainNegData.py`: Selects non-foreground images, 3x the amount of masked imgs in train set (600 negatives for 200 masked imgs already in set)
+     - Also reduces image dimensions, & creates blank ground-truth masks for model to train on
+     - Saves these selected images as CSVs in `csv_negative`
  - `testData.py`: Selects non-manually-masked images labeled to have foreground objects, and randomly picks 2x the amount of non-foreground images
      - Results in 1/3 positive and 2/3 negative images, which better simulates the proportions of images in dataset than 1/2 split.
+     - Makes sure not to select images already used for training via `csv_negative` reference CSVs
  - `npy_to_h5.py|ipynb`: Script|notebook to convert npy outputs from `FgSegNet_generate_prudhoe.py` to (faster) h5 datasets
 
 ### Acknowledgements

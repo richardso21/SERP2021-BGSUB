@@ -174,7 +174,7 @@ def train(results, scene, mdl_path, vgg_weights_path, method_name):
         
     del model, results, chk, redu, early
 
-dataset = ['prudhoe12','prudhoe22']
+dataset = ['prudhoe12','prudhoe15','prudhoe22']
 
 method_name = 'FgSegNet_M' # either <FgSegNet_M> or <FgSegNet_S>, default FgSegNet_M
 
@@ -190,7 +190,7 @@ val_split = 0.2
 batch_size = 1
 
 assert num_frames in [50,200], 'Incorrect number of frames'
-main_dir = os.path.join('..', method_name)
+main_dir = os.path.join('/scratch/richardso21/20-21_BGSUB', method_name + "_neg")
 # main_mdl_dir = os.path.join(main_dir, 'CDnet', 'models' + str(num_frames))
 main_mdl_dir = os.path.join(main_dir, 'Prudhoe', 'models' + str(num_frames))
 
@@ -210,9 +210,9 @@ for scene in dataset:
     print ('Training ->>> ' + scene)
     
     # train_dir = os.path.join('..', 'UCSD_train' + str(num_split), scene)
-    train_dir = os.path.join('..', '..', f'{scene}_DS_dst_half', f'label_rand{num_frames}')
+    train_dir = os.path.join('/scratch/richardso21/20-21_BGSUB/FgSegNet_Train', f'{scene}_DS_dst_half_neg', 'label')
     # dataset_dir = os.path.join('..', 'UCSD_dataset', scene + '_', scene)
-    dataset_dir = os.path.join('..', '..', f'{scene}_DS_dst_half', 'raw')
+    dataset_dir = os.path.join('/scratch/richardso21/20-21_BGSUB/FgSegNet_Train', f'{scene}_DS_dst_half_neg', 'raw')
     
     mdl_path = os.path.join(main_mdl_dir, 'mdl_' + scene + '.h5')
     

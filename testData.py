@@ -8,7 +8,7 @@ from tqdm import tqdm
 from PIL import Image
 
 SITES = ['prudhoe_12', 'prudhoe_15','prudhoe_22']
-ENDPTH = '/scratch/richardso21/20-21_BGSUB/FgSegNet_Test'
+ENDPTH = '/scratch/richardso21/20-21_BGSUB/FgSegNet_Test_wNeg'
 
 Path(ENDPTH).mkdir(exist_ok=True)
 
@@ -62,6 +62,8 @@ for site in SITES:
   print(f"{site} | Negative files")
   # find all images in the dataset
   tank_all = [x for x in Path(tank_pth).rglob("*.JPG")]
+  # open csv file containing negatives already used for training
+  df_neg = pd.read_csv(f'csv_negative/{site}_negative.csv')
   i = 0
   pbar = tqdm(total=(c * 2))
   # continue for 2x amount of positives
@@ -70,6 +72,9 @@ for site in SITES:
     negative = str(random.choice(tank_all))
     # neglect if in positives list
     if negative in df['AbsFilePath']:
+      continue
+    # neglect if in negatives-already-used list
+    if negative in df_neg['AbsFilePath']:
       continue
     # make new filename and put in `neg_dir`
     new_fn = negative.strip(tank_pth).replace('/','_')
