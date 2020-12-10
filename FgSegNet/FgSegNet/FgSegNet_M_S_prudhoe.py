@@ -209,9 +209,7 @@ print('*** Current method >>> ' + method_name + '\n')
 for scene in dataset:
     print ('Training ->>> ' + scene)
     
-    # train_dir = os.path.join('..', 'UCSD_train' + str(num_split), scene)
     train_dir = os.path.join('/scratch/richardso21/20-21_BGSUB/FgSegNet_Train', f'{scene}_DS_dst_half_neg', 'label')
-    # dataset_dir = os.path.join('..', 'UCSD_dataset', scene + '_', scene)
     dataset_dir = os.path.join('/scratch/richardso21/20-21_BGSUB/FgSegNet_Train', f'{scene}_DS_dst_half_neg', 'raw')
     
     mdl_path = os.path.join(main_mdl_dir, 'mdl_' + scene + '.h5')

@@ -44,9 +44,9 @@ for site in SITES:
 
   i = 0
   amnt = len(os.listdir(join(target_dir, 'raw')))
-  pbar = tqdm(total=(amnt * 3))
-  # continue for 3x `AMNT`
-  while i < (amnt * 3):
+  pbar = tqdm(total=(amnt * 2))
+  # continue for 2x `AMNT`
+  while i < (amnt * 2):
     # make random choice in tank
     negative = str(random.choice(tank_all))
     # neglect if in positives list
