@@ -54,7 +54,7 @@ for site in SITES:
       continue
     
     # make new filename and put in `raw` 
-    new_fn = negative.strip(tank_pth).replace('/','_')
+    new_fn = negative.replace(tank_pth + '/' , '').replace('/','_')
     img_half(negative, join(target_dir, "raw", f"raw_{new_fn}"))
     # generate corresponding blank image (negative-labeled) at `label_rand...` folder
     # also, switch format to PNG format!!!

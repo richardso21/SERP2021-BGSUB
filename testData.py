@@ -77,7 +77,7 @@ for site in SITES:
     if negative in df_neg['AbsFilePath']:
       continue
     # make new filename and put in `neg_dir`
-    new_fn = negative.strip(tank_pth).replace('/','_')
+    new_fn = negative.replace(tank_pth + '/' , '').replace('/','_')
     # copy2(negative, join(neg_dir, new_fn))
     img_half(negative, join(neg_dir, new_fn))
     # + 1
