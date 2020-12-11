@@ -55,9 +55,10 @@ for site in SITES:
       c += 1
     except:
       e += 1
-  print(f'Positive unlabeled w/o error: {c}')
   print(f'Errors (missing files): {e}')
+  print(f'Positive unlabeled w/o error: {c}')
 
+  print()
 
   print(f"{site} | Negative files")
   # find all images in the dataset
