@@ -36,9 +36,10 @@ def scaleImg(input_path):
 
 # Define paths to files and output directory
 PTH = '/scratch/richardso21/20-21_BGSUB'
-OPTH = join(PTH, 'FgSegNet_O')
+# OPTH = join(PTH, 'FgSegNet_O')
+OPTH = join(PTH, 'FgSegNet_O_neg')
 SITES = ['prudhoe_12', 'prudhoe_15', 'prudhoe_22']
-TSET = 200
+# TSET = 200
 
 Path(OPTH).mkdir(exist_ok=True)
 
@@ -47,12 +48,14 @@ for site in SITES:
     print(f'SITE: {site}')
     Path(join(OPTH, site)).mkdir(exist_ok=True)
     # load respective model
-    mdl_path = join(PTH, f'FgSegNet_M/Prudhoe/models{TSET}', f'mdl_{site.replace("_", "")}.h5')
+    #mdl_path = join(PTH, f'FgSegNet_M/Prudhoe/models{TSET}', f'mdl_{site.replace("_", "")}.h5')
+    mdl_path = join(PTH, f'FgSegNet_M_neg/Prudhoe/models', f'mdl30_{site.replace("_", "")}.h5')
+
     model = load_model(mdl_path, custom_objects={'MyUpSampling2D': MyUpSampling2D}, compile=False)
     
     # create positive + negative image list
-    input_pths_pos = [pth for pth in Path(join(PTH, 'FgSegNet_Test', site, 'pos')).rglob('*.JPG')]
-    input_pths_neg = [pth for pth in Path(join(PTH, 'FgSegNet_Test', site, 'neg')).rglob('*.JPG')]
+    input_pths_pos = [pth for pth in Path(join(PTH, 'FgSegNet_Test_wNeg', site, 'pos')).rglob('*.JPG')]
+    input_pths_neg = [pth for pth in Path(join(PTH, 'FgSegNet_Test_wNeg', site, 'neg')).rglob('*.JPG')]
 
     # separate them into chunks (prevent memory overload)
     input_splts_pos = [input_pths_pos[x:x+32] for x in range(0, len(input_pths_pos), 32)]
