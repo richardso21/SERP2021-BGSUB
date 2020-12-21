@@ -7,22 +7,27 @@ _**NOTE**_: _Large Files (including compressed archives and model files) are omi
 ## Folder Structure
  - `FgSegNet`: Files related to FgSegNet model
      - `FgSegNet/FgSegNet`: Modified [FgSegNet model source code](https://github.com/lim-anggun/FgSegNet)
-         - `FgSegNet_generate_prudhoe.py` : Script written by author to produce FgSegNet masks out of trained scene-specific models
-     - `FgSegNet/FgSegNet_M`: Output model files
      - `mask_classifier`: Classifier for FgSegNet's outputs
+        - `old` : graphs and data derived from FgSegNet without negative label training (old method)
+        - `neg` : graphs derived from FgSegNet w/ negative label training
  - `csv_raw`: CSV files from TimeLapse dataset (contains extraneous information)
      - Filenames: `<folderName>_<#>.csv`
- - `csv_parsed`: CSV files that include file info that has at least one object of importance
+ - `csv_parsed`: CSV files that include file info which has at least one object of importance
      - Filenames: `<folderName>_<#>_parsed.csv`
  - `img_raw_tar`: Tar.gz files that contain all images from respective CSV files in `csv_parsed`
      - Filenames: `<folderName>_<#>_positive.tar.gz`
  - `img_DS`: Directories and zipped files containing raw and labeled images (labled locally)
      - Filenames: `<folderName><#>_DS(.zip)`
+ - `csv_negative`: CSV files that include file info for all negatively-labeled imgs put for FgSegNet training
+     - Filenames: `<folderName>_<#>_negative.csv`
      
 ## Notable Files
+ - `FgSegNet/FgSegNet/FgSegNet_generate_prudhoe.py` : Script written by author to produce FgSegNet masks out of trained scene-specific models
+ - `FgSegNet/mask_classifier/presence_thr(_neg).ipynb` : Experimental Jupyter nb to investigate generated data
+ - `FgSegNet/mask_classifier/presence_thr_class.ipynb` : Improved (decluttered) notebook of the former using abstracted data classes
  - `prudhoe_15_concat.ipynb`: Experimental Notebook to automate process of creating files in `csv_parsed` & `img_raw_tar` from `csv_raw` files
- - `parse.py`: Functional script for automating the above function (derived from Notebook)
- - `tarify.py`: Gets files from `csv_parsed` to make `tar.gz` files (derived from Notebook)
+     - `parse.py`: Functional script for automating the above function (derived from Notebook)
+     - `tarify.py`: Gets files from `csv_parsed` to make `tar.gz` files (derived from Notebook)
  - `mask.py`: Used locally to convert Labelme `.json`s into binary masks
  - `img_DS/prudhoe#_DS/move.py`: Moves files in DS directories into `scratch` for FgSegNet model
      - Reduces image dimensions by half (due to GPU memory limitations)
