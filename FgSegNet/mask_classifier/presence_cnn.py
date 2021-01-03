@@ -91,6 +91,7 @@ def fit(epochs, lr, model, train_dl, val_dl, opt_func=torch.optim.Adam):
         model.epoch_end(epoch, res, test=False)
         # append to history
         history.append(res)
+        
     return history
 
 class CNNModel(ModelBase):
@@ -123,3 +124,4 @@ class CNNModel(ModelBase):
         out = self.fc3(out)
         out = F.sigmoid(out)
         return out
+
