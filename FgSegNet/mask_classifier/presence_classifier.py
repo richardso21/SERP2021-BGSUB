@@ -15,7 +15,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 # training batch size
 batch_size = 4
 # specify main site
-site = 'prudhoe_12'
+site = 'prudhoe_22'
 
 
 def accuracy(outs, labels):
@@ -103,7 +103,7 @@ def fit(epochs, lr, model, train_dl, val_dl, save_pth, opt_func=torch.optim.Adam
         # if val_acc is higher than before, save model
         if res["avg_acc"] > top:
             print('Saving model...')
-            torch.save(model.save_dict(), save_pth)
+            torch.save(model.state_dict(), save_pth)
             top = res["avg_acc"]
         # append to history
         history.append(res)
@@ -246,7 +246,8 @@ history += fit(10, 1e-6, model, train_loader, val_loader, save_pth + '.pth')
 evl = evaluate(model, test_loader)
 # getting raw outputs and relative ground truths
 outputs, truths = test_evaluate(model, test_loader)
-print('FINAL EVALUATION:' + evl)
+print('FINAL EVALUATION:')
+print(evl)
 
 # save everything
 print('Saving history, raw test output, and test ground truths...')
