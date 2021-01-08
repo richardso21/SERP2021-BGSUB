@@ -180,8 +180,8 @@ class Prudhoe_DS(Dataset):
 PTH = '/scratch/richardso21/20-21_BGSUB/'
 
 # clarify other needed paths
-npy_pth = os.path.join(PTH, 'FgSegNet_O_neg', site)
-save_pth = os.path.join(PTH, 'FgSegNet_clf', site)
+npy_pth = os.path.join(PTH, 'archive', 'FgSegNet_O_old', '200', site)
+save_pth = os.path.join(PTH, 'FgSegNet_clf', 'old', site)
 
 # initiate dataset and get size
 ds = Prudhoe_DS(npy_pth)
