@@ -4,8 +4,10 @@ A project to build a robust method for foreground-object/caribou image detection
 
 _**NOTE**_: _Large Files (including compressed archives and model files) are omitted from this repository. As a result, `img_raw_tar` and `FgSegNet_M` are empty directories in this repo._
 
+---
+
 ## Workflow (Usage Instructions)
-1. Clone this repository into a system that will be used for ML model training. _(Make sure that your system is powerful enough to handel neural network training; FgSegNet's architecture is especially large!)_
+1. Clone this repository into a system that will be used for ML model training. _(Make sure that your system has at least 10 GB of GPU Memory/VRAM to make sure FgSegNet won't crash, or decrease the batch size in the FgSegNet script!)_
 2. Make sure you have the latest version of [Anaconda](https://www.anaconda.com/products/individual)/Miniconda installed onto your system. On this directory, run the following commands line-by-line:
 ```
 conda env create --file environment.yaml
@@ -15,9 +17,10 @@ _This will create a conda environment called `bgsub` with the proper Python and 
 
 3. Replace (patch) the existing `pyramids.py` of the scikit-image library with the one in `FgSegNet/FgSegNet/skimage_pyramids.py`. `pyramids.py` should be located in `<path_to_conda>/conda/envs/bgsub/lib/python3.6/site-packages/skimage/transform/pyramids.py`.
 4. Utilize the open-source software [labelme](https://github.com/wkentaro/labelme) to draw polygonal annotations of foreground objects for ≈200 foreground-positive images. The label names of the annotations do not matter. _This procedure is necessary as FgSegNet requires training data to be effective in foreground segmentation._
-5. Labelme generates a `.json` file for each labeled image. Run `mask.py` on the directory which your images/JSON files are stored; it should generate a new folder `DS` within the directory. 
+5. Labelme generates a `.json` file for each labeled image. Put `mask.py` in the directory which your images/JSON files are stored; when executed (`python mask.py`) it should generate a new folder named `DS`. 
 6. TODO
 
+---
 
 ## Folder Structure
  - `FgSegNet`: Files related to FgSegNet model
