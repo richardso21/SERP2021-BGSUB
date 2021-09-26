@@ -61,7 +61,7 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
 
 1. Check and tune the hyperparameters(variables) in the `FgSegNet.py` script.
 
-    - You can change the `scene` name to differentiate between models for different image sets.
+    - You can change the `scene` name to differentiate between models for different image sets. _(Scene name defaults to "BGSUB")_
     - Change `num_frames` to match the number of annotated image samples.
     - Alter `batch_size` according to your computing resources (smaller batch size requies less resources).
 
@@ -73,7 +73,25 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
 
 ### Training the Foreground Presence Predictor
 
-**TODO**
+1.  Collect a pool of foreground-negative images and foreground-positive images.
+
+    -   The recommended amount of images is > 2000 images for both types combined.
+    -   **The proportion between foreground-negative and positive images depend on the frequency of foreground objects present in the image dataset.**
+
+    &nbsp;
+
+2.  Run `FgSegNet_generate.py` in the `FgSegNet` directory to convert these raw images into FgSegNet black/white masks.
+
+    -   Modify the `scene` variable to select the correct model for your specific dataset.
+    -   Outputs of the FgSegNet model should be stored in the `data/classifier/FgSegNet_O` directory.
+
+3.  Run `presence_classifier.py` in the `FgSegNet` directory to train an external Convolutional Neural Network that predicts the probability of foreground present in a given FgSegNet mask.
+
+    -   The trained model and additional data will be stored in `FgSegNet/classifier`.
+
+
+### Next Steps
+The trained FgSegNet and complementary predictor models can be utilized to evaluate further examples of image data in the same dataset/scene. For instance, these models can be implemented into a pipeline to aid researchers in the annotation process.
 
 ---
 
