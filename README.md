@@ -12,8 +12,6 @@ A project to build a robust method for foreground-object/caribou image detection
 
     - _This will be needed to quickly manage the required dependencies the project's code will need._
 
-    &nbsp;
-
 2. Install [labelme](https://github.com/wkentaro/labelme) on a machine **where you can and will annotate sample images**.
 
     - _labelme will be used to manually generate training data._
@@ -51,8 +49,6 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
     - **Your images should be contained in the directory named `data/annotated` at the root of this repository.**
     - The recommended number of images to annoatate is ≈200 images, although you can annotate less/more according to your data or needs.
 
-    &nbsp;
-
 2. Run `mask.py` (`python mask.py`) in the `data/annotated` directory which contains the images.
 
 3. _(Recommended) Additionally, run `resize.py` to shrink the size of the raw/label image data if they are very large, since that can also lead to FgSegNet crashing when attempting to train._
@@ -65,8 +61,6 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
     - Change `num_frames` to match the number of annotated image samples.
     - Alter `batch_size` according to your computing resources (smaller batch size requies less resources).
 
-    &nbsp;
-
 2. Run `FgSegNet.py` in the `FgSegNet` directory. It will automatically use your annotated image data to train a new model.
     - FgSegNet will generate a lot of terminal output, namely for debugging and process tracking purposes.
     - If FgSegNet sucessfully trains, **a new directory `models` will contain the model file in the format `mdl_<scene_name>.h5`.**
@@ -78,8 +72,6 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
     -   The recommended amount of images is > 2000 images for both types combined.
     -   **The proportion between foreground-negative and positive images depend on the frequency of foreground objects present in the image dataset.**
 
-    &nbsp;
-
 2.  Run `FgSegNet_generate.py` in the `FgSegNet` directory to convert these raw images into FgSegNet black/white masks.
 
     -   Modify the `scene` variable to select the correct model for your specific dataset.
@@ -89,8 +81,8 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
 
     -   The trained model and additional data will be stored in `FgSegNet/classifier`.
 
-
 ### Next Steps
+
 The trained FgSegNet and complementary predictor models can be utilized to evaluate further examples of image data in the same dataset/scene. For instance, these models can be implemented into a pipeline to aid researchers in the annotation process.
 
 ---
