@@ -35,11 +35,15 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
 - *Run this command with `sudo` if you have a permission error.*
 
 ### Labeling/Preparing Image Data
+> NOTE: Your raw image data **should** be in the `.JPG` format for the project code to code properly.
+
 Utilize [labelme](https://github.com/wkentaro/labelme) to draw polygonal annotations of foreground objects for a pool of foreground-positive image samples. 
-- **Your images should be contained in the directory named `data` at the root of this repository.**
+- **Your images should be contained in the directory named `data/annotated` at the root of this repository.**
 - The recommended number of images to annoatate is ≈200 images, although you can annotate less/more according to your data or needs.
 
-After annotating these image samples, run `mask.py` (`python mask.py`) in the `data` directory which contains the images.
+After annotating these image samples, run `mask.py` (`python mask.py`) in the `data/annotated` directory which contains the images.
+
+*(Recommended) Run `resize.py` to shrink the size of the raw/label image data if they are very large, since that can also lead to FgSegNet crashing when attempting to train.*
 
 ### Training the Annotator (FgSegNet)
 TODO
