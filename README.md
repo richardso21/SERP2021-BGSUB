@@ -9,9 +9,13 @@ A project to build a robust method for foreground-object/caribou image detection
 > Ensure your computing system has at least **10 GB of GPU Memory/VRAM** so FgSegNet won't crash! _You may tinker with FgSegNet's batch size if you have limited resources._
 
 1. Install the latest version of [Anaconda](https://www.anaconda.com/products/individual).
-    - _This will be needed to quickly manage the required dependencies the project's code will need._  
-       &nbsp;
+
+    - _This will be needed to quickly manage the required dependencies the project's code will need._
+
+    &nbsp;
+
 2. Install [labelme](https://github.com/wkentaro/labelme) on a machine **where you can and will annotate sample images**.
+
     - _labelme will be used to manually generate training data._
 
 ### Setting up the environment
@@ -44,15 +48,32 @@ cp pyramids.py $(conda info | grep "active env location" | cut -d ' ' -f 9)/lib/
 
 1. Use [labelme](https://github.com/wkentaro/labelme) to draw polygonal annotations of foreground objects for a pool of foreground-positive image samples.
 
-    -   **Your images should be contained in the directory named `data/annotated` at the root of this repository.**
-    -   The recommended number of images to annoatate is ≈200 images, although you can annotate less/more according to your data or needs.
+    - **Your images should be contained in the directory named `data/annotated` at the root of this repository.**
+    - The recommended number of images to annoatate is ≈200 images, although you can annotate less/more according to your data or needs.
+
+    &nbsp;
 
 2. Run `mask.py` (`python mask.py`) in the `data/annotated` directory which contains the images.
 
-3. _(Recommended) Run `resize.py` to shrink the size of the raw/label image data if they are very large, since that can also lead to FgSegNet crashing when attempting to train._
+3. _(Recommended) Additionally, run `resize.py` to shrink the size of the raw/label image data if they are very large, since that can also lead to FgSegNet crashing when attempting to train._
 
 ### Training the Annotator (FgSegNet)
 
+1. Check and tune the hyperparameters(variables) in the `FgSegNet.py` script.
+
+    - You can change the `scene` name to differentiate between models for different image sets.
+    - Change `num_frames` to match the number of annotated image samples.
+    - Alter `batch_size` according to your computing resources (smaller batch size requies less resources).
+
+    &nbsp;
+
+2. Run `FgSegNet.py` in the `FgSegNet` directory. It will automatically use your annotated image data to train a new model.
+    - FgSegNet will generate a lot of terminal output, namely for debugging and process tracking purposes.
+    - If FgSegNet sucessfully trains, **a new directory `models` will contain the model file in the format `mdl_<scene_name>.h5`.**
+
+### Training the Foreground Presence Predictor
+
+**TODO**
 
 ---
 

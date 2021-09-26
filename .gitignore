@@ -1,9 +1,9 @@
 .ipynb_checkpoints/
 .vscode/
 __pycache__/
-FgSegNet/FgSegNet_M/*
-FgSegNet/FgSegNet/FgSegNet_M_S_misc/
-FgSegNet/FgSegNet/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
+FgSegNet_old/FgSegNet_M/*
+FgSegNet_old/FgSegNet/FgSegNet_M_S_misc/
+FgSegNet_old/FgSegNet/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5
 img_DS/*.zip
 img_raw_tar/*.tar.gz
 
